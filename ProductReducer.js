@@ -10,13 +10,13 @@ export const productSlice = createSlice({
         getProducts: (state, action) => {
             state.product.push({ ...action.payload });
         },
-        increamentQty: (state, action) => {
+        incrementQty: (state, action) => {
             const itemPresent = state.product.find(
                 (item) => item.id === action.payload.id
             );
             itemPresent.quantity++;
         },
-        decreamentQty: (state, action) => {
+        decrementQty: (state, action) => {
             const itemPresent = state.product.find(
                 (item) => item.id === action.payload.id
             );
@@ -34,6 +34,6 @@ export const productSlice = createSlice({
 });
 
 
-export const { getProducts, increamentQty, decreamentQty } = productSlice.actions;
+export const { getProducts, incrementQty, decrementQty } = productSlice.actions;
 
 export default productSlice.reducer;
