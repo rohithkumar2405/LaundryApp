@@ -2,27 +2,27 @@ import {
   StyleSheet,
   Text,
   View,
-  SafeAreaView,
   TextInput,
-  StatusBar,
   Pressable,
   ScrollView,
   Alert,
 } from "react-native";
 import React, { useState } from "react";
 import HorizontalDatepicker from "@awrminkhodaei/react-native-horizontal-datepicker";
-import { useDispatch, useSelector } from "react-redux";
+import { useSelector } from "react-redux";
 import { useNavigation } from "@react-navigation/native";
+import { StatusBar } from "expo-status-bar";
+import { SafeAreaView } from "react-native-safe-area-context";
+
 
 const PickUpScreen = () => {
   const [selectedDate, setSelectedDate] = useState("");
-  const [selectedTime, setSelectedTime] = useState([]);
-  const [delivery, setDelivery] = useState([]);
-    const cart = useSelector((state) => state.cart.cart);
-    const navigation = useNavigation();
+  const cart = useSelector((state) => state.cart.cart);
   const total = cart
     .map((item) => item.quantity * item.price)
     .reduce((curr, prev) => curr + prev, 0);
+  const [selectedTime, setSelectedTime] = useState([]);
+  const [delivery, setDelivery] = useState([]);
   const deliveryTime = [
     {
       id: "0",
@@ -60,7 +60,7 @@ const PickUpScreen = () => {
       time: "1:00 PM",
     },
     {
-      id: "2",
+      id: "3",
       time: "2:00 PM",
     },
     {
@@ -72,7 +72,7 @@ const PickUpScreen = () => {
       time: "4:00 PM",
     },
   ];
-
+  const navigation = useNavigation();
   const proceedToCart = () => {
     if (!selectedDate || !selectedTime || !delivery) {
       Alert.alert(
@@ -100,8 +100,8 @@ const PickUpScreen = () => {
 
   return (
     <>
-      <SafeAreaView style={{ paddingTop: StatusBar.currentHeight }}>
-        <Text style={{ fontSize: 16, fontWeight: "500", marginHorizontal: 10 }}>
+      <SafeAreaView>
+        <Text style={{ fontSize: 16, fontWeight: "500", marginHorizontal: 10 , paddingTop: StatusBar.currentHeight}}>
           enter Address
         </Text>
         <TextInput
@@ -136,7 +136,7 @@ const PickUpScreen = () => {
         />
 
         <Text style={{ fontSize: 16, fontWeight: "500", marginHorizontal: 10 }}>
-          Select time
+          Select Time
         </Text>
 
         <ScrollView horizontal showsHorizontalScrollIndicator={false}>
@@ -166,15 +166,13 @@ const PickUpScreen = () => {
             </Pressable>
           ))}
         </ScrollView>
-
         <Text style={{ fontSize: 16, fontWeight: "500", marginHorizontal: 10 }}>
-          delivery date
+          Delivery Date
         </Text>
+
         <ScrollView horizontal showsHorizontalScrollIndicator={false}>
           {deliveryTime.map((item, i) => (
             <Pressable
-              onPress={() => setDelivery(item.name)}
-              key={i}
               style={
                 delivery.includes(item.name)
                   ? {
@@ -192,19 +190,22 @@ const PickUpScreen = () => {
                       borderWidth: 0.7,
                     }
               }
+              onPress={() => setDelivery(item.name)}
+              key={i}
             >
               <Text>{item.name}</Text>
             </Pressable>
           ))}
         </ScrollView>
       </SafeAreaView>
+
       {total === 0 ? null : (
         <Pressable
           style={{
-            marginTop: "auto",
             backgroundColor: "#088F8F",
+            marginTop: "auto",
             padding: 10,
-            marginBottom: 30,
+            marginBottom: 40,
             margin: 15,
             borderRadius: 7,
             flexDirection: "row",
@@ -224,12 +225,13 @@ const PickUpScreen = () => {
                 marginVertical: 6,
               }}
             >
-              extra charges may apply
+              extra charges might apply
             </Text>
           </View>
+
           <Pressable onPress={proceedToCart}>
-            <Text style={{ fontSize: 15, fontWeight: "600", color: "white" }}>
-              Proceed to cart
+            <Text style={{ fontSize: 17, fontWeight: "600", color: "white" }}>
+              Proceed to Cart
             </Text>
           </Pressable>
         </Pressable>
